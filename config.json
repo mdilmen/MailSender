@@ -1,0 +1,5 @@
+{
+  "ConnectionStrings": {
+    "MailSenderConnectionString": "server=.\\SQLExpress;Database=Survey;Integrated Security=true;MultipleActiveResultSets=true;"
+  }
+}

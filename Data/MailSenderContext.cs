@@ -14,13 +14,13 @@ namespace MailSender.Data
         {
         }
 
-        public DbSet<AgeRange> AgeRanges { get; set; }
-        public DbSet<City> Cities { get; set; }
-        public DbSet<Company> Companies { get; set; }
-        public DbSet<Contract> Contracts { get; set; }
-        public DbSet<Premium> Premiums { get; set; }
-        public DbSet<SurveyUser> SurveyUsers { get; set; }
-        public DbSet<SubUser> SubUsers { get; set; }
+        //public DbSet<AgeRange> AgeRanges { get; set; }
+        //public DbSet<City> Cities { get; set; }
+        //public DbSet<Company> Companies { get; set; }
+        //public DbSet<Contract> Contracts { get; set; }
+        //public DbSet<Premium> Premiums { get; set; }
+        //public DbSet<SurveyUser> SurveyUsers { get; set; }
+        //public DbSet<SubUser> SubUsers { get; set; }
         public DbSet<Report> Reports { get; set; }
         /*
         protected override void OnModelCreating(ModelBuilder modelBuilder)

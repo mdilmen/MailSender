@@ -29,10 +29,11 @@ namespace MailSender
         {
             Log.Logger = new LoggerConfiguration()
             .Enrich.FromLogContext()
-            //.MinimumLevel.Override("Microsoft.NetCore", LogEventLevel.Warning)
+            .MinimumLevel.Override("Microsoft.NetCore", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
             .MinimumLevel.Override("System.Net.Http.HttpClient", LogEventLevel.Warning)
             .WriteTo.File(new RenderedCompactJsonFormatter(), @"c:/temp/logs/MailSender.json")            
+            .WriteTo.Seq("http://localhost:5341")
             .CreateLogger();
 
             try
@@ -51,38 +52,16 @@ namespace MailSender
             {
                 Log.CloseAndFlush();
             }
-            //CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-EN");
-            //var serviceCollection = new ServiceCollection();
-            //ConfigureServices(serviceCollection);
-            //var serviceProvider = serviceCollection.BuildServiceProvider();
 
-            //try
-            //{
-            //    // this execution shall take 4-5 steps
-            //    // token store is an issue
-            //    // --- 
-            //    // Get Token 
-            //    // Get Invoice List
-            //    // Loop every invoice in List 
-            //    // For every item get individual invoice 
-            //    // Send to repository (Save Invoices) 
-            //    // Update IsNew for recorded invoices 
-
-            //    //await serviceProvider.GetService<ITurkcellService>().Run();
-            //}
-            //catch (Exception generalException)
-            //{
-            ////    var logger = serviceProvider.GetService<ILogger<Program>>();
-            // //   logger.LogError(generalException, "An Exception occured while running the Integration service");
-            //}
             Console.ReadKey();
 
         }
         private static void ConfigureServices(IServiceCollection serviceCollection)
         {
+            serviceCollection.AddLogging(builder => builder.AddSerilog());
 
-            // config file
             _config = new ConfigurationBuilder()
+                
                             .SetBasePath(Directory.GetCurrentDirectory())
                             .AddJsonFile("config.json", true, true)
                             .Build();
@@ -90,49 +69,15 @@ namespace MailSender
             serviceCollection.AddDbContext<MailSenderContext>(cfg =>
             {
                 //cfg.UseSqlServer(_config.GetConnectionString("MailSenderConnectionString"));
-                cfg.UseSqlServer("server=.\\SQLExpress;Database=Survey;Integrated Security=true;MultipleActiveResultSets=true;");
+                cfg.UseSqlServer("server=10.65.100.42;Database=Survey;User Id=sa;password=Sh99m5ayneS2003;Trusted_Connection=False;MultipleActiveResultSets=true;");
+                
             });
 
-            //serviceCollection.AddFluentEmail("tssbilgilendirme@oyakgrupsigorta.com")
-
-            //                 .AddSmtpSender("localhost", 25);
-
-            // serviceCollection.AddScoped<SmtpClient>();
+       
             serviceCollection.AddScoped<IMailService, MailService>();
             serviceCollection.AddScoped<IMailSenderRepository, MailSenderRepository>();
 
 
-
-            //// DbContext With Factory   
-            ////Console.WriteLine(Directory.GetCurrentDirectory().ToString());
-            ////Console.ReadLine();
-            //serviceCollection.AddDbContextFactory<InvoiceContext>(cfg =>
-            //{
-            //    cfg.UseSqlServer(_config.GetConnectionString("InvoiceConnectionString"));
-            //});
-            //// EntegrationLog DbConnection            
-            //serviceCollection.AddDbContext<EntegrationLogContext>(cfg =>
-            //{
-            //    cfg.UseSqlServer(_config.GetConnectionString("EntegrationLogConnectionString"));
-            //});
-            //// Adding loggers             
-            //serviceCollection.AddSingleton(new LoggerFactory());
-            //serviceCollection.AddLogging(opt => { opt.AddConsole(); opt.AddDebug(); });
-
-            //// For Mapping Invoice Service 
-            //serviceCollection.AddScoped<IInvoiceService, InvoiceService>();
-
-            //// For CRUD operations
-            //serviceCollection.AddScoped<ITurkcellService, TurkcellService>();
-
-            //// HttpClientFactory
-            //serviceCollection.AddHttpClient<AuthClient>();
-            //serviceCollection.AddHttpClient<InvoiceClient>();
-
-            //// Repository Invoice
-            //serviceCollection.AddScoped<IInvoiceRepository, InvoiceRepositoryWithFactory>();
-            //// Repository EntegrationLog
-            //serviceCollection.AddScoped<IEntegrationLogRepository, EntegrationLogRepository>();
         }
     }
 }

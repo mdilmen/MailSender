@@ -1,6 +1,7 @@
 ﻿using FluentEmail.Core;
 //using MailKit.Net.Smtp;
 using MailSender.Data;
+using MailSender.Data.Models;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -26,55 +27,79 @@ namespace MailSender.Services
         }
         public async Task<bool> Send()
         {
-            SmtpClient client = new SmtpClient("mysmtpserver");
-            client.UseDefaultCredentials = false;
-            //client.Credentials = new NetworkCredential("tssbilgilendirme@oyakgrupsigorta.com", "12qwasZX.");
-            client.Host = "srvexc.oyakyatirim.pvt";
-            client.Port = 25;
-            //client.EnableSsl = true;
-            client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            client.Timeout = 10000;
-
-            MailMessage mailMessage = new MailMessage
+            SmtpClient client = new SmtpClient("mysmtpserver")
             {
-                From = new MailAddress("tssbilgilendirme@oyakgrupsigorta.com"),
-                Body = @"<html><head></head><body>
-                        <div>
-                        <h4> Değerli Üyemiz;</h4>
-                          Tamamlayıcı Sağlık Sigortası Ön Talep Toplama Anketine katılımınız için teşekkür ederiz.<br>
-                          Anket sonuçlarına göre çalışmalarımız Şubat ayı içinde tamamlanacaktır.<br>
-                          En kısa sürede süreç ile ilgili sizleri tekrar bilgilendiriyor olacağız.<br><br>
-                          Saygılarımızla,<br>
-                          OYAK Grup Sigorta ve Reasürans Brokerliği A.Ş.<br>
-                          <br>                          
-                        </div>
-                          </body></html>",
-                Subject = "Tamamlayıcı Sağlık Sigortası Ön Talep Toplama Anketi hk.",
-                IsBodyHtml = true,
-                Priority = MailPriority.High,
-                BodyEncoding = Encoding.Default
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential("oyakmenkul\tssbilgilendirme", "12qwasZX."),
+                Host = "srvexc.oyakyatirim.pvt",
+                Port = 25,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                Timeout = 10000
             };
 
+
+
             var reports = _mailSenderRepository.GetReportEmails();
-            //mailMessage.To.Add("mmdilmen@gmail.com");
-            int i = 0;
-            foreach (var item in reports.Where(r => r.Contains("turansm9@gmail.com")))
+            var contracts = _mailSenderRepository.GetAllContracts();
+            var models = new List<MailingModel>();
+            foreach (var report in reports)
             {
-                i++;
-                try
+                var contract = contracts.Where(c => c.Id == report.ContractId).FirstOrDefault();
+                var model = new MailingModel()
                 {
+                    Name = report.MemberName,
+                    Email = report.MemberEmail,
+                    Guid = contract.Guid
+                };
+                models.Add(model);
+            }
+
+
+
+            
+            int i = 0;
+            //foreach (var item in models.Where(m => m.Email.Contains("turnavy48@gmail.com")))
+            foreach (var item in models.Where(m => m.Email.Contains("turnavy48@gmail.com")))
+                {
+                i++;
+
+                MailMessage mailMessage = new MailMessage
+                {
+                    From = new MailAddress("tssbilgilendirme@oyakgrupsigorta.com"),
+                    Body =
+                          $"<html><head></head><body>" +
+                              "<div>" +
+                              $"<h4>Sn.{item.Name} </h4>" +
+                              "Tamamlayıcı Sağlık Sigortası Uygulamasına katılımınız için teşekkür ederiz.<br>" +
+                              "Anket kayıt bilgilerinize alttaki linkten ulaşabilirsiniz .<br>" +
+                              "https://test.oyakgrupsigorta.com/ContractMember/" + $"{item.Guid}<br><br>" +
+                              "Saygılarımızla,<br>" +
+                              "OYAK Grup Sigorta ve Reasürans Brokerliği A.Ş.<br>" +
+                              "<br>" +
+                              "</div>" +
+                          "</body></html>",
+                    Subject = "Tamamlayıcı Sağlık Sigortası Ön Talep Toplama Anketi hk.",
+                    IsBodyHtml = true,
+                    Priority = MailPriority.High,
+                    BodyEncoding = Encoding.Default
+                };
+
+                try
+                {                    
                     mailMessage.To.Clear();
-                    mailMessage.To.Add(item);
+                    //mailMessage.To.Add(item.Email);
                     //client.Send(mailMessage);
-                    //mailMessage.To.Add("mustafa.dilmen@oyakyatirim.com.tr");
+                    mailMessage.To.Add("mustafa.dilmen@oyakyatirim.com.tr");
+                    //mailMessage.To.Add("mmdilmen@gmail.com");
                     client.Send(mailMessage);
-                    _logger.LogInformation("Mail Send to {address}", item);
-                    Console.WriteLine($"{i} Mail Send to {item}" );
+                    _logger.LogInformation("Mail Send to {address}", item.Email);
+                    Console.WriteLine($"{i} Mail Send to {item.Email}" );
                 }
                 catch (Exception ex)
                 {
                     _logger.LogError("Mail Could not be Send to {address} {exception}", item, ex.Message);
-                    Console.WriteLine($"Mail Could not be Send to {item} {ex.Message}");
+                    Console.WriteLine($"Mail Could not be Send to {item.Email} {ex.Message}");
                 }
                 Thread.Sleep(200);
             }

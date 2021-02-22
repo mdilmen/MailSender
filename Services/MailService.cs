@@ -30,10 +30,10 @@ namespace MailSender.Services
             SmtpClient client = new SmtpClient("mysmtpserver")
             {
                 UseDefaultCredentials = false,
-                Credentials = new NetworkCredential("oyakmenkul\tssbilgilendirme", "12qwasZX."),
+                //Credentials = new NetworkCredential("oyakmenkul\tssbilgilendirme", "12qwasZX."),
                 Host = "srvexc.oyakyatirim.pvt",
                 Port = 25,
-                EnableSsl = true,
+                //EnableSsl = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 Timeout = 10000
             };
@@ -71,8 +71,9 @@ namespace MailSender.Services
                           $"<html><head></head><body>" +
                               "<div>" +
                               $"<h4>Sn.{item.Name} </h4>" +
-                              "Tamamlayıcı Sağlık Sigortası Uygulamasına katılımınız için teşekkür ederiz.<br>" +
-                              "Anket kayıt bilgilerinize alttaki linkten ulaşabilirsiniz .<br>" +
+                              "Tamamlayıcı Sağlık Sigortası Anketine katılımınız için teşekkür ederiz.<br>" +
+                              "Anket sonuçlarına göre siz değerli üyelerimiz için primlerde revizeler yapılmıştır.<br>" +
+                              "Avantajlı güncel primler ile poliçenizi tanzim ettirmek için aşağıdaki linkini tıklayınız!<br>" +
                               "https://test.oyakgrupsigorta.com/ContractMember/" + $"{item.Guid}<br><br>" +
                               "Saygılarımızla,<br>" +
                               "OYAK Grup Sigorta ve Reasürans Brokerliği A.Ş.<br>" +

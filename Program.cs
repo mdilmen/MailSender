@@ -2,10 +2,12 @@
 using FluentEmail.Smtp;
 //using MailKit.Net.Smtp;
 using MailSender.Data;
+using MailSender.Http;
 using MailSender.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Polly;
 using Serilog;
 using Serilog.Events;
 using Serilog.Formatting.Compact;
@@ -32,7 +34,7 @@ namespace MailSender
             .MinimumLevel.Override("Microsoft.NetCore", LogEventLevel.Warning)
             .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
             .MinimumLevel.Override("System.Net.Http.HttpClient", LogEventLevel.Warning)
-            .WriteTo.File(new RenderedCompactJsonFormatter(), @"c:/temp/logs/MailSender.json")            
+            .WriteTo.File(new RenderedCompactJsonFormatter(), @"c:/temp/logs/MailSender.json")
             .WriteTo.Seq("http://localhost:5341")
             .CreateLogger();
 
@@ -43,6 +45,7 @@ namespace MailSender
                 Log.Information("Starting up");
                 var serviceProvider = serviceCollection.BuildServiceProvider();
                 await serviceProvider.GetService<IMailService>().Send();
+                await serviceProvider.GetService<ISmsService>().Send();
             }
             catch (Exception ex)
             {
@@ -61,7 +64,7 @@ namespace MailSender
             serviceCollection.AddLogging(builder => builder.AddSerilog());
 
             _config = new ConfigurationBuilder()
-                
+
                             .SetBasePath(Directory.GetCurrentDirectory())
                             .AddJsonFile("config.json", true, true)
                             .Build();
@@ -70,12 +73,16 @@ namespace MailSender
             {
                 //cfg.UseSqlServer(_config.GetConnectionString("MailSenderConnectionString"));
                 cfg.UseSqlServer("server=10.65.100.42;Database=Survey;User Id=sa;password=Sh99m5ayneS2003;Trusted_Connection=False;MultipleActiveResultSets=true;");
-                
+
             });
 
-       
+            serviceCollection.AddHttpClient<SmsClient>()
+                             .AddTransientHttpErrorPolicy(x => x.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(300)));
             serviceCollection.AddScoped<IMailService, MailService>();
+            serviceCollection.AddScoped<ISmsService, SmsService>();
             serviceCollection.AddScoped<IMailSenderRepository, MailSenderRepository>();
+            serviceCollection.AddHttpContextAccessor();
+            serviceCollection.AddTransient<ISeriLogService, SeriLogService>();
 
 
         }

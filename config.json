@@ -1,5 +1,9 @@
 {
   "ConnectionStrings": {
     "MailSenderConnectionString": "server=.\\SQLExpress;Database=Survey;Integrated Security=true;MultipleActiveResultSets=true;"
+  },
+  "SmsService": {
+    //"Address": "https://localhost:44338/"
+    "Address": "http://195.46.130.73:9091/"
   }
 }

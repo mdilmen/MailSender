@@ -10,5 +10,6 @@ namespace MailSender.Data
     {
         List<Report> GetReportEmails();
         List<Contract> GetAllContracts();
+        List<Report> GetReportPhones();
     }
 }

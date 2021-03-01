@@ -73,14 +73,14 @@ namespace MailSender.Services
                               $"<h4>Sn.{item.Name} </h4>" +
                               "Tamamlayıcı Sağlık Sigortası Anketine katılımınız için teşekkür ederiz.<br>" +
                               "Anket sonuçlarına göre siz değerli üyelerimiz için primlerde revizeler yapılmıştır.<br>" +
-                              "Avantajlı güncel primler ile poliçenizi tanzim ettirmek için aşağıdaki linkini tıklayınız!<br>" +
+                              "Avantajlı güncel primler ile poliçenizi tanzim ettirmek için aşağıdaki linki tıklayınız!<br>" +
                               "https://test.oyakgrupsigorta.com/ContractMember/" + $"{item.Guid}<br><br>" +
                               "Saygılarımızla,<br>" +
                               "OYAK Grup Sigorta ve Reasürans Brokerliği A.Ş.<br>" +
                               "<br>" +
                               "</div>" +
                           "</body></html>",
-                    Subject = "Tamamlayıcı Sağlık Sigortası Ön Talep Toplama Anketi hk.",
+                    Subject = "Oyak Rahat TSS Ön Talep Toplama Anketi hk.",
                     IsBodyHtml = true,
                     Priority = MailPriority.High,
                     BodyEncoding = Encoding.Default

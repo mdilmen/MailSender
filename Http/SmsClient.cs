@@ -14,13 +14,13 @@ namespace MailSender.Http
     public class SmsClient
     {
         private readonly HttpClient _client;
-        private readonly IConfiguration _config;
+        
         private readonly ISeriLogService _seriLogService;
 
-        public SmsClient(HttpClient client, IConfiguration config, ISeriLogService seriLogService)
+        public SmsClient(HttpClient client, ISeriLogService seriLogService)
         {
             _client = client;
-            _config = config;
+            
             _seriLogService = seriLogService;
             _client.Timeout = new TimeSpan(0, 0, 30);
             _client.DefaultRequestHeaders.Clear();
@@ -64,8 +64,8 @@ namespace MailSender.Http
 
             var strBody =
 
-                          $"Sn.{name} " +
-                          "Oyak Rahat TSS Kayıt ve Ödeme bilgilerinize alttaki linkten ulaşabilirsiniz. " +
+                          $"Sn. {name} " +
+                          "Avantajlı güncel primler ile poliçenizi tanzim ettirmek için aşağıdaki linki tıklayınız! " +
                           $"{link} " +
                           "Saygılarımızla, " +
                           "OYAK Grup Sigorta A.Ş.";

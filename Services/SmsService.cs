@@ -39,20 +39,29 @@ namespace MailSender.Services
 
             int i = 0;
             //foreach (var item in models.Where(m => m.Email.Contains("turnavy48@gmail.com")))
-            foreach (var item in models.Where(m => m.PhoneNumber.Contains("(553) 876-8294")))
+            Console.WriteLine($"SMS Operation Started @ {DateTime.Now.ToLongTimeString()}");
+            foreach (var item in models.Skip(1000).Take(1))
             {
                 i++;
-
+               
                 try
                 {
                     // Send to regular user
                     //var smsModel = _smsClient.GenerateSmsModel(item.PhoneNumber, "https://test.oyakgrupsigorta.com/" + "Policy /PolicyInfoDetail?guid=" + item.Guid, item.Name);
 
                     // Send to mmd
-                    var smsModel = _smsClient.GenerateSmsModel("5327654078", "https://test.oyakgrupsigorta.com/" + "Policy /PolicyInfoDetail?guid=" + item.Guid, item.Name);
+                    var smsModel = _smsClient.GenerateSmsModel("5327654078", "https://test.oyakgrupsigorta.com/ContractMember/" + item.Guid, item.Name);
 
-                    await _smsClient.SendSms(smsModel);
-                    Console.WriteLine($"{i} SMS Send to {item.PhoneNumber} , {item.Name}");
+                    var response = await _smsClient.SendSms(smsModel);
+                    if (!response.isErrorOccured)
+                    {
+                        Console.WriteLine($"{i} SMS Send to {item.PhoneNumber} , {item.Name}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"SMS Could not be Send to {item.PhoneNumber} , {item.Name} ,  {response.message}");
+                    }
+                    
                 }
                 catch (Exception ex)
                 {
@@ -61,6 +70,7 @@ namespace MailSender.Services
                 }
                 Thread.Sleep(200);
             }
+            Console.WriteLine($"SMS Operation Ended @ {DateTime.Now.ToLongTimeString()}");
             return true;
         }
     }

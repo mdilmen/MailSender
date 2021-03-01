@@ -70,7 +70,7 @@ namespace MailSender.Services
                     Body =
                           $"<html><head></head><body>" +
                               "<div>" +
-                              $"<h4>Sn.{item.Name} </h4>" +
+                              $"<h4>Sn. {item.Name} </h4>" +
                               "Tamamlayıcı Sağlık Sigortası Anketine katılımınız için teşekkür ederiz.<br>" +
                               "Anket sonuçlarına göre siz değerli üyelerimiz için primlerde revizeler yapılmıştır.<br>" +
                               "Avantajlı güncel primler ile poliçenizi tanzim ettirmek için aşağıdaki linki tıklayınız!<br>" +

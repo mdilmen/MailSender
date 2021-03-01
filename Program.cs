@@ -44,7 +44,7 @@ namespace MailSender
                 ConfigureServices(serviceCollection);
                 Log.Information("Starting up");
                 var serviceProvider = serviceCollection.BuildServiceProvider();
-                await serviceProvider.GetService<IMailService>().Send();
+                //await serviceProvider.GetService<IMailService>().Send();
                 await serviceProvider.GetService<ISmsService>().Send();
             }
             catch (Exception ex)

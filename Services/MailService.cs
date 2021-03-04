@@ -72,7 +72,7 @@ namespace MailSender.Services
                               "<div>" +
                               $"<h4>Sn. {item.Name} </h4>" +
                               "Tamamlayıcı Sağlık Sigortası Anketine katılımınız için teşekkür ederiz.<br>" +
-                              "Anket sonuçlarına göre siz değerli üyelerimiz için primlerde revizeler yapılmıştır.<br>" +
+                              "Anket sonuçlarına göre siz değerli üyelerimiz için daha uygun primli teklifler hazırlanmıştır.<br>" +
                               "Avantajlı güncel primler ile Rahat TSS poliçenizi tanzim ettirmek için aşağıdaki linki tıklayınız!<br>" +
                               "https://rahattss.oyakgrupsigorta.com/ContractMember/" + $"{item.Guid}<br><br>" +
                               "Saygılarımızla,<br>" +

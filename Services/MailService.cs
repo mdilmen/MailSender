@@ -66,7 +66,7 @@ namespace MailSender.Services
 
                 MailMessage mailMessage = new MailMessage
                 {
-                    From = new MailAddress("tssbilgilendirme@oyakgrupsigorta.com"),
+                    From = new MailAddress("tssbilgilendirme@oyakgrupsigorta.com","Oyak Grup Sigorta"),
                     Body =
                           $"<html><head></head><body>" +
                               "<div>" +

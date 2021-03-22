@@ -62,7 +62,7 @@ namespace MailSender.Services
             int i = 0;
             //foreach (var item in models.Where(m => m.Email.Contains("turnavy48@gmail.com")))
             foreach (var item in models.Where(m => m.Email.Contains("turnavy48@gmail.com")))
-            {
+                {
                 i++;
 
                 LinkedResource img = new LinkedResource(@"C:\Users\mdilmen\source\repos\MailSender\Images\tss1.jpeg", MediaTypeNames.Image.Jpeg)
@@ -83,20 +83,15 @@ namespace MailSender.Services
                 var strAlternateView =
 
                           $"<html><head></head><body>" +
-                              "<div style='max-width:600px;'>" +
-                                  "<div>" +
-                                  $"<h4>Sn. {item.Name} </h4>" +
-                                  "Tamamlayıcı Sağlık Sigortası Anketine katılımınız için teşekkür ederiz.<br>" +
-                                  "Anket sonuçlarına göre siz değerli üyelerimiz için primlerde revizeler yapılmıştır.<br>" +
-                                  "Avantajlı güncel primler ile poliçenizi tanzim ettirmek için aşağıdaki linki tıklayınız!<br>" +
-                                  "https://rahattss.oyakgrupsigorta.com/ContractMember/" + $"{item.Guid}<br><br>" +
-                                  "Saygılarımızla,<br>" +
-                                  "OYAK Grup Sigorta ve Reasürans Brokerliği A.Ş.<br>" +
-                                  "<br>" +
-                                  "<div>" +
-                                        "<img src=cid:MyImage id='img' alt='' max-width='600px'/>" +
-                                  "</div>" +
-                                  "</div>" +
+                              "<div>" +
+                              $"<h4>Sn. {item.Name} </h4>" +
+                              "Tamamlayıcı Sağlık Sigortası Anketine katılımınız için teşekkür ederiz.<br>" +
+                              "Anket sonuçlarına göre siz değerli üyelerimiz için primlerde revizeler yapılmıştır.<br>" +
+                              "Avantajlı güncel primler ile poliçenizi tanzim ettirmek için aşağıdaki linki tıklayınız!<br>" +
+                              "https://test.oyakgrupsigorta.com/ContractMember/" + $"{item.Guid}<br><br>" +
+                              "Saygılarımızla,<br>" +
+                              "OYAK Grup Sigorta ve Reasürans Brokerliği A.Ş.<br>" +
+                              "<br>" +
                               "</div>" +
                           "</body></html>";
                 AlternateView av = AlternateView.CreateAlternateViewFromString(strAlternateView, null, MediaTypeNames.Text.Html);
@@ -105,9 +100,9 @@ namespace MailSender.Services
                 try
                 {
                     mailMessage.To.Clear();
-                    //mailMessage.To.Add(item.Email);
-                    //client.Send(mailMessage);
-                    mailMessage.To.Add("mustafa.dilmen@oyakyatirim.com.tr");
+                    mailMessage.To.Add(item.Email);
+                    client.Send(mailMessage);
+                    //mailMessage.To.Add("mustafa.dilmen@oyakyatirim.com.tr");
                     //mailMessage.To.Add("mmdilmen@gmail.com");
                     client.Send(mailMessage);
                     _logger.LogInformation("Mail Send to {address}", item.Email);

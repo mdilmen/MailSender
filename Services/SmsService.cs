@@ -47,10 +47,10 @@ namespace MailSender.Services
                 try
                 {
                     // Send to regular user
-                    //var smsModel = _smsClient.GenerateSmsModel(item.PhoneNumber, "https://test.oyakgrupsigorta.com/" + "Policy /PolicyInfoDetail?guid=" + item.Guid, item.Name);
+                    var smsModel = _smsClient.GenerateSmsModel(item.PhoneNumber, "https://rahattss.oyakgrupsigorta.com/" + "Policy /PolicyInfoDetail?guid=" + item.Guid, item.Name);
 
                     // Send to mmd
-                    var smsModel = _smsClient.GenerateSmsModel("5327654078", "https://test.oyakgrupsigorta.com/ContractMember/" + item.Guid, item.Name);
+                    //var smsModel = _smsClient.GenerateSmsModel("5327654078", "https://rahattss.oyakgrupsigorta.com/ContractMember/" + item.Guid, item.Name);
 
                     var response = await _smsClient.SendSms(smsModel);
                     if (!response.isErrorOccured)

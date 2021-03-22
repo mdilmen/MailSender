@@ -50,7 +50,7 @@ namespace MailSender.Services
                     //var smsModel = _smsClient.GenerateSmsModel(item.PhoneNumber, "https://rahattss.oyakgrupsigorta.com/ContractMember/" + item.Guid, item.Name);
 
                     // Send to mmd
-                    var smsModel = _smsClient.GenerateSmsModel("5327654078", "https://rahattss.oyakgrupsigorta.com/ContractMember/" + item.Guid, item.Name);
+                    var smsModel = _smsClient.GenerateSmsModel("5334482136", "https://rahattss.oyakgrupsigorta.com/ContractMember/" + item.Guid, item.Name);
 
                     var response = await _smsClient.SendSms(smsModel);
                     if (!response.isErrorOccured)

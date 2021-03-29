@@ -61,7 +61,13 @@ namespace MailSender.Services
 
             int i = 0;
             //foreach (var item in models.Where(m => m.Email.Contains("turnavy48@gmail.com")))
-            foreach (var item in models.Where(m => m.Email.Contains("turnavy48@gmail.com")))
+            //foreach (var item in models.Where(m => m.Email.Contains("mmdilmen@gmail.com")))
+            foreach (var item in models.Skip(1000).Take(1))
+            //foreach (var item in models.Take(500))
+            //foreach (var item in models.Where(m => !m.PhoneNumber.Contains("(532) 682-6840") && !m.PhoneNumber.Contains("(506) 584-4970")).Skip(1000).Take(2))
+            //foreach (var item in models.Skip(1500).Take(1000))
+            //foreach (var item in models.Where(m => m.Email.Contains("orhanugurluoglu@yahoo.com")).Skip(1500).Take(1000))
+            //foreach (var item in models.Where(m => m.Name.Contains("ORHAN UĞURLUOĞLU")))
             {
                 i++;
 
@@ -72,14 +78,14 @@ namespace MailSender.Services
 
                 MailMessage mailMessage = new MailMessage
                 {
-                    From = new MailAddress("tssbilgilendirme@oyakgrupsigorta.com", "Oyak Grup Sigorta"),
+                    From = new MailAddress("tssbilgilendirme@oyakgrupsigorta.com", "OYAK Grup Sigorta"),
 
-                    Subject = "Oyak Rahat TSS Ön Talep Toplama Anketi hk.",
+                    Subject = "OYAK Rahat TSS Ön Talep Toplama Anketi hk.",
                     IsBodyHtml = true,
                     Priority = MailPriority.High,
                     BodyEncoding = Encoding.Default
                 };
-
+                var strLink = "https://rahattss.oyakgrupsigorta.com/ContractMember/" + $"{item.Guid}";
                 var strAlternateView =
 
                           $"<html><head></head><body>" +
@@ -87,8 +93,9 @@ namespace MailSender.Services
                               $"<h4>Sn. {item.Name} </h4>" +
                               "Tamamlayıcı Sağlık Sigortası Anketine katılımınız için teşekkür ederiz.<br>" +
                               "Anket sonuçlarına göre siz değerli üyelerimiz için primlerde revizeler yapılmıştır.<br>" +
-                              "Avantajlı güncel primler ile poliçenizi tanzim ettirmek için aşağıdaki linki tıklayınız!<br>" +
-                              "https://rahattss.oyakgrupsigorta.com/ContractMember/" + $"{item.Guid}<br><br>" +
+                              $"Avantajlı güncel primler ile poliçenizi tanzim ettirmek için <a href={strLink}>tıklayınız!</a> <br>" +
+                              //"https://rahattss.oyakgrupsigorta.com/ContractMember/" + $"{item.Guid}<br><br>" +
+                              "<br>" +
                               "Saygılarımızla,<br>" +
                               "OYAK Grup Sigorta ve Reasürans Brokerliği A.Ş.<br>" +
                               "<br>" +
@@ -103,11 +110,11 @@ namespace MailSender.Services
                 try
                 {
                     mailMessage.To.Clear();
-                    //mailMessage.To.Add(item.Email);
-                    //client.Send(mailMessage);
-                    mailMessage.To.Add("esra.kantarceken@oyakgrupsigorta.com");
-                    //mailMessage.To.Add("mmdilmen@gmail.com");
+                    mailMessage.To.Add(item.Email);
                     client.Send(mailMessage);
+                    //mailMessage.To.Add("esra.kantarceken@oyakgrupsigorta.com");
+                    //mailMessage.To.Add("mustafa.dilmen@oyakyatirim.com.tr");
+                    //client.Send(mailMessage);
                     _logger.LogInformation("Mail Send to {address}", item.Email);
                     Console.WriteLine($"{i} Mail Send to {item.Email}");
                 }

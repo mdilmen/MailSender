@@ -38,19 +38,25 @@ namespace MailSender.Services
             }
 
             int i = 0;
-            //foreach (var item in models.Where(m => m.Email.Contains("turnavy48@gmail.com")))
+            
             Console.WriteLine($"SMS Operation Started @ {DateTime.Now.ToLongTimeString()}");
-            foreach (var item in models.Skip(1000).Take(1))
-            {
+                //foreach (var item in models.Where(m => !m.PhoneNumber.Contains("(533) 811-6582")))
+                foreach (var item in models.Skip(1000).Take(1))
+                //foreach (var item in models.Take(500))
+                //foreach (var item in models.Where(m => !m.PhoneNumber.Contains("(532) 682-6840") && !m.PhoneNumber.Contains("(506) 584-4970")).Skip(1000).Take(2))
+                //foreach (var item in models.Where(m => m.PhoneNumber.Contains("682-6840")))
+                //foreach (var item in models.Skip(1500).Take(1000))
+                //foreach (var item in models.Where(m => m.PhoneNumber.Contains("(533) 811-6582")))
+                {
                 i++;
                
                 try
                 {
                     // Send to regular user
-                    //var smsModel = _smsClient.GenerateSmsModel(item.PhoneNumber, "https://rahattss.oyakgrupsigorta.com/ContractMember/" + item.Guid, item.Name);
+                    var smsModel = _smsClient.GenerateSmsModel(item.PhoneNumber, "https://rahattss.oyakgrupsigorta.com/ContractMember/" + item.Guid, item.Name);
 
                     // Send to mmd
-                    var smsModel = _smsClient.GenerateSmsModel("5334482136", "https://rahattss.oyakgrupsigorta.com/ContractMember/" + item.Guid, item.Name);
+                    //var smsModel = _smsClient.GenerateSmsModel("5327654078", "https://rahattss.oyakgrupsigorta.com/ContractMember/" + item.Guid, item.Name);
 
                     var response = await _smsClient.SendSms(smsModel);
                     if (!response.isErrorOccured)

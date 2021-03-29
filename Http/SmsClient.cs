@@ -65,7 +65,7 @@ namespace MailSender.Http
             var strBody =
 
                           $"Sn. {name} " +
-                          "Avantajlı güncel primler ile Rahat TSS poliçenizi tanzim ettirmek için aşağıdaki linki tıklayınız! " +
+                          "Avantajlı güncel primler ile OYAK Grup Sigorta Rahat TSS poliçenizi tanzim ettirmek için aşağıdaki linki tıklayınız! " +
                           $"{link} " +
                           "Saygılarımızla, " +
                           "OYAK Grup Sigorta A.Ş.";

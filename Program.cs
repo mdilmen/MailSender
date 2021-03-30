@@ -44,8 +44,12 @@ namespace MailSender
                 ConfigureServices(serviceCollection);
                 Log.Information("Starting up");
                 var serviceProvider = serviceCollection.BuildServiceProvider();
-                await serviceProvider.GetService<IMailService>().Send();
+                //await serviceProvider.GetService<IMailService>().Send();
+                //await serviceProvider.GetService<IMailService>().SendToNonComing();
+                //await serviceProvider.GetService<IMailService>().SendToNotCompleted();
                 //await serviceProvider.GetService<ISmsService>().Send();
+                //await serviceProvider.GetService<ISmsService>().SendToNonComing();
+                //await serviceProvider.GetService<ISmsService>().SendToNotCompleted();
             }
             catch (Exception ex)
             {
@@ -75,12 +79,19 @@ namespace MailSender
                 cfg.UseSqlServer("server=10.65.100.42;Database=Survey;User Id=sa;password=Sh99m5ayneS2003;Trusted_Connection=False;MultipleActiveResultSets=true;");
 
             });
+            serviceCollection.AddDbContext<RahatTSSContext>(cfg =>
+            {
+                //cfg.UseSqlServer(_config.GetConnectionString("MailSenderConnectionString"));
+                cfg.UseSqlServer("server=10.65.100.42;Database=OgsRahatTSS;User Id=sa;password=Sh99m5ayneS2003;Trusted_Connection=False;MultipleActiveResultSets=true;");
+
+            });
 
             serviceCollection.AddHttpClient<SmsClient>()
                              .AddTransientHttpErrorPolicy(x => x.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(300)));
             serviceCollection.AddScoped<IMailService, MailService>();
             serviceCollection.AddScoped<ISmsService, SmsService>();
             serviceCollection.AddScoped<IMailSenderRepository, MailSenderRepository>();
+            serviceCollection.AddScoped<IRahatTSSRepository, RahatTSSRepository>();
             serviceCollection.AddHttpContextAccessor();
             serviceCollection.AddTransient<ISeriLogService, SeriLogService>();
 

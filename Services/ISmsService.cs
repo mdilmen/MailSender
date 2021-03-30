@@ -9,5 +9,7 @@ namespace MailSender.Services
     public interface ISmsService
     {
         Task<bool> Send();
+        Task<bool> SendToNonComing();
+        Task<bool> SendToNotCompleted();
     }
 }

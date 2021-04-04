@@ -50,6 +50,10 @@ namespace MailSender
                 //await serviceProvider.GetService<ISmsService>().Send();
                 //await serviceProvider.GetService<ISmsService>().SendToNonComing();
                 //await serviceProvider.GetService<ISmsService>().SendToNotCompleted();
+                var userList = await serviceProvider.GetService<IUserFinderService>().Find();
+                await serviceProvider.GetService<IMailService>().SendToSurveyNotCompleted(userList);
+                await serviceProvider.GetService<ISmsService>().SendToSurveyNotCompleted(userList);
+
             }
             catch (Exception ex)
             {
@@ -90,6 +94,7 @@ namespace MailSender
                              .AddTransientHttpErrorPolicy(x => x.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(300)));
             serviceCollection.AddScoped<IMailService, MailService>();
             serviceCollection.AddScoped<ISmsService, SmsService>();
+            serviceCollection.AddScoped<IUserFinderService, UserFinderService>();
             serviceCollection.AddScoped<IMailSenderRepository, MailSenderRepository>();
             serviceCollection.AddScoped<IRahatTSSRepository, RahatTSSRepository>();
             serviceCollection.AddHttpContextAccessor();

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MailSender.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,5 +12,6 @@ namespace MailSender.Services
         Task<bool> Send();
         Task<bool> SendToNonComing();
         Task<bool> SendToNotCompleted();
+        Task<bool> SendToSurveyNotCompleted(List<UserNotCompletedModel> models);
     }
 }

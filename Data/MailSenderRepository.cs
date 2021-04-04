@@ -72,5 +72,30 @@ namespace MailSender.Data
             }
             return reportsEdited;
         }
+
+        public List<SurveyUser> GetAllUsers()
+        {
+            var usersEdited = new List<SurveyUser>();
+            var users = _context.SurveyUsers.ToList();
+            foreach (var item in users)
+            {
+                var itemEdited = usersEdited.Where(r => r.TCNO == item.TCNO).FirstOrDefault();
+                // new item
+                if (itemEdited == null)
+                {
+                    usersEdited.Add(item);
+                }
+                // same item exits check id, get the greater id
+                else
+                {
+                    if (itemEdited.Id < item.Id)
+                    {
+                        usersEdited.Remove(itemEdited);
+                        usersEdited.Add(item);
+                    }
+                }
+            }
+            return usersEdited;
+        }
     }
 }

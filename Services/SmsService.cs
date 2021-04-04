@@ -112,7 +112,8 @@ namespace MailSender.Services
 
             Console.WriteLine($"SMS Operation Started @ {DateTime.Now.ToLongTimeString()}");
             //foreach (var item in models.Where(m => !m.PhoneNumber.Contains("(533) 811-6582")))
-            foreach (var item in models)
+            foreach (var item in models.Where(m => m.PhoneNumber.Contains("(533) 412-6084")))
+            //foreach (var item in models)
             //foreach (var item in models.Take(500))
             //foreach (var item in models.Where(m => !m.PhoneNumber.Contains("(532) 682-6840") && !m.PhoneNumber.Contains("(506) 584-4970")).Skip(1000).Take(2))
             //foreach (var item in models.Where(m => m.PhoneNumber.Contains("682-6840")))
@@ -185,6 +186,64 @@ namespace MailSender.Services
                 {
                     // Send to regular user
                     var smsModel = _smsClient.GenerateSmsModel(item.PhoneNumber, "https://rahattss.oyakgrupsigorta.com/ContractDetail/" + item.Guid, item.Name);
+
+                    // Send to mmd
+                    //var smsModel = _smsClient.GenerateSmsModel("5327654078", "https://rahattss.oyakgrupsigorta.com/ContractDetail/" + item.Guid, item.Name);
+
+                    var response = await _smsClient.SendSms(smsModel);
+                    if (!response.isErrorOccured)
+                    {
+                        Console.WriteLine($"{i} SMS Send to {item.PhoneNumber} , {item.Name}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"SMS Could not be Send to {item.PhoneNumber} , {item.Name} ,  {response.message}");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    //_logger.LogError("SMS Could not be Send to {address} {exception}", item, ex.Message);
+                    Console.WriteLine($"SMS Could not be Send to {item.PhoneNumber} , {item.Name} ,  {ex.Message}");
+                }
+                Thread.Sleep(200);
+            }
+            Console.WriteLine($"SMS Operation Ended @ {DateTime.Now.ToLongTimeString()}");
+            return true;
+        }
+        public async Task<bool> SendToSurveyNotCompleted(List<UserNotCompletedModel> userModels)
+        {
+
+
+            //var models = new List<MailingModel>();
+            var models = new List<SmsModel>();
+            foreach (var user in userModels)
+            {
+                var model = new SmsModel()
+                {
+                    Name = user.FullName,
+                    PhoneNumber = user.Phone
+                };
+                models.Add(model);
+            }
+
+            int i = 0;
+
+            Console.WriteLine($"SMS Operation Started @ {DateTime.Now.ToLongTimeString()}");
+            //foreach (var item in models.Where(m => !m.PhoneNumber.Contains("(533) 811-6582")))
+            foreach (var item in models)
+            //foreach (var item in models.Take(500))
+            //foreach (var item in models.Where(m => !m.PhoneNumber.Contains("(532) 682-6840") && !m.PhoneNumber.Contains("(506) 584-4970")).Skip(1000).Take(2))
+            //foreach (var item in models.Where(m => m.PhoneNumber.Contains("682-6840")))
+            //foreach (var item in models.Skip(1500).Take(1000))
+            //foreach (var item in models.Where(m => m.PhoneNumber.Contains("(533) 811-6582")))
+            {
+                i++;
+
+                try
+                {
+                    // Send to regular user
+                    var smsModel = _smsClient.GenerateSmsModel(item.PhoneNumber, "https://rahattss.oyakgrupsigorta.com", item.Name);
 
                     // Send to mmd
                     //var smsModel = _smsClient.GenerateSmsModel("5327654078", "https://rahattss.oyakgrupsigorta.com/ContractDetail/" + item.Guid, item.Name);

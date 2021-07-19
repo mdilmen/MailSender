@@ -13,5 +13,7 @@ namespace MailSender.Services
         Task<bool> SendToNonComing();
         Task<bool> SendToNotCompleted();
         Task<bool> SendToSurveyNotCompleted(List<UserNotCompletedModel> models);
+        Task<bool> SendCongratMail();
+
     }
 }

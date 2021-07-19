@@ -82,6 +82,11 @@ namespace MailSender.Services
             return true;
         }
 
+        public Task<bool> SendCongratSms()
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<bool> SendToNonComing()
         {
             var rahatTSSUsers = _rahatTSSRepository.GetSurveyUsers();

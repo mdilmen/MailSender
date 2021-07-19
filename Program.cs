@@ -50,9 +50,11 @@ namespace MailSender
                 //await serviceProvider.GetService<ISmsService>().Send();
                 //await serviceProvider.GetService<ISmsService>().SendToNonComing();
                 //await serviceProvider.GetService<ISmsService>().SendToNotCompleted();
-                var userList = await serviceProvider.GetService<IUserFinderService>().Find();
-                await serviceProvider.GetService<IMailService>().SendToSurveyNotCompleted(userList);
-                await serviceProvider.GetService<ISmsService>().SendToSurveyNotCompleted(userList);
+                //var userList = await serviceProvider.GetService<IUserFinderService>().Find();
+                //await serviceProvider.GetService<IMailService>().SendToSurveyNotCompleted(userList);
+                //await serviceProvider.GetService<ISmsService>().SendToSurveyNotCompleted(userList);
+
+                await serviceProvider.GetService<IMailService>().SendCongratMail();
 
             }
             catch (Exception ex)
